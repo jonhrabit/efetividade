@@ -1,5 +1,7 @@
 package br.com.efetividade.services;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,7 +32,10 @@ public class RegistroService {
         return registroRepository.save(registroOld);
     }
 
-    public Registro save(Registro registro) {
+    public Registro save(Registro registro) throws Exception {
+        if (this.all().stream().filter(reg -> reg.comparar(registro)).count() > 0) {
+            throw new Exception("Já existe um regisrtro com este vigilante nesta data - "+ registro.getData() + " - "+ registro.getVigilante().getGuerra());
+        }
         return registroRepository.save(registro);
     }
 
@@ -40,6 +45,14 @@ public class RegistroService {
 
     public void delete(Long id) throws ItemNotFoundExcepion {
         registroRepository.delete(this.get(id));
+    }
+
+    public Date getDataRegistro(String string) {
+        String[] i = string.split("/");
+        Calendar calendar = Calendar.getInstance();
+        int mes = Integer.parseInt(i[1]) - 1;
+        calendar.set(Integer.parseInt(i[2]), mes, Integer.parseInt(i[0]), 1, 0);
+        return calendar.getTime();
     }
 
 }

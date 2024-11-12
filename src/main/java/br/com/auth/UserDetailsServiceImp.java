@@ -7,11 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 import br.com.auth.model.Usuario;
 import br.com.auth.repositories.UsuarioRepository;
 import br.com.efetividade.excepions.ItemNotFoundExcepion;
 
+@Service
 public class UserDetailsServiceImp implements UserDetailsService {
 
     @Autowired
