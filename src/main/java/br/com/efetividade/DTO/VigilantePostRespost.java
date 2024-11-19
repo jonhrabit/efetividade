@@ -4,6 +4,6 @@ import java.util.List;
 
 import br.com.efetividade.models.Vigilante;
 
-public record VigilantePostRespost(List<Vigilante> erros, List<Vigilante> sucessos) {
+public record VigilantePostRespost(List<String> erros, List<Vigilante> sucessos) {
 
 }

@@ -35,6 +35,18 @@ public class RegistroController {
         return registroService.all();
     }
 
+    @PostMapping("/merge/{id}/{id2}")
+    List<Registro> mergeRegistro(@PathVariable Long id, @PathVariable Long id2) throws ItemNotFoundExcepion {
+        List<Registro> lista = new ArrayList<Registro>();
+        lista = registroService.all().stream().filter(reg -> reg.getVigilante().getId() == id).toList();
+        Vigilante vigilante = vigilanteService.get(id2);
+        for (Registro reg : lista) {
+            reg.setVigilante(vigilante);
+            registroService.update(reg, reg.getId());
+        } 
+        return lista;
+    }
+
     @PostMapping
     public RegistroPostRespost post(@RequestBody List<Registro> registros) {
         RegistroPostRespost resposta = new RegistroPostRespost(new ArrayList<String>(),
@@ -125,6 +137,10 @@ public class RegistroController {
     @GetMapping("/{id}")
     public Registro get(@PathVariable Long id) throws Throwable {
         return registroService.get(id);
+    }
+    @GetMapping("/periodo/{mes}/{ano}")
+    public List<Registro> findByMes(@PathVariable int mes,@PathVariable int ano) {
+        return registroService.queryByMes(mes, ano);
     }
 
     @PutMapping("/{id}")

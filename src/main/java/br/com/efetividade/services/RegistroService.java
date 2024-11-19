@@ -34,7 +34,8 @@ public class RegistroService {
 
     public Registro save(Registro registro) throws Exception {
         if (this.all().stream().filter(reg -> reg.comparar(registro)).count() > 0) {
-            throw new Exception("Já existe um regisrtro com este vigilante nesta data - "+ registro.getData() + " - "+ registro.getVigilante().getGuerra());
+            throw new Exception("Já existe um regisrtro com este vigilante nesta data - " + registro.getData() + " - "
+                    + registro.getVigilante().getGuerra());
         }
         return registroRepository.save(registro);
     }
@@ -53,6 +54,20 @@ public class RegistroService {
         int mes = Integer.parseInt(i[1]) - 1;
         calendar.set(Integer.parseInt(i[2]), mes, Integer.parseInt(i[0]), 1, 0);
         return calendar.getTime();
+    }
+
+    public List<Registro> findByDateBetween(Date inicio, Date fim) {
+        return registroRepository.findByDataBetween(inicio, fim);
+    }
+
+    public List<Registro> queryByMes(int mes, int ano) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(ano, mes, 1, 00, 01);
+        Date d1 = calendar.getTime();
+        int ultimoDia = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+        calendar.set(ano, mes, ultimoDia, 23, 59);
+        Date d2 = calendar.getTime();
+        return registroRepository.findByDataBetween(d1, d2);
     }
 
 }

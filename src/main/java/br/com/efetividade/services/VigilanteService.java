@@ -39,7 +39,12 @@ public class VigilanteService {
         return vigilanteRepository.save(vigilanteOld);
     }
 
-    public Vigilante save(Vigilante vigilante) {
+    public Vigilante save(Vigilante vigilante) throws Exception {
+        if (this.all().stream().filter(vig -> vig.comparar(vigilante)).count() > 0) {
+            throw new Exception(
+                    "(" + vigilante.getCpf() + " - " + vigilante.getMatricula() + ")"
+                            + "Já há um vigilante cadastrado com esta matricula ou CPF");
+        }
         return vigilanteRepository.save(vigilante);
     }
 
@@ -49,6 +54,10 @@ public class VigilanteService {
 
     public void delete(Long id) throws ItemNotFoundExcepion {
         vigilanteRepository.delete(this.get(id));
+    }
+
+    public List<Vigilante> pendencia() {
+        return this.all().stream().filter(vig -> (vig.getCpf() == null) || (vig.getNome() == null)).toList();
     }
 
 }

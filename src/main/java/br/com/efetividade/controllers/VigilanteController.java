@@ -31,10 +31,14 @@ public class VigilanteController {
 
     @PostMapping
     public VigilantePostRespost post(@RequestBody List<Vigilante> vigilantes) {
-        VigilantePostRespost resposta = new VigilantePostRespost(new ArrayList<Vigilante>(),
+        VigilantePostRespost resposta = new VigilantePostRespost(new ArrayList<String>(),
                 new ArrayList<Vigilante>());
         vigilantes.forEach(vig -> {
-            resposta.sucessos().add(vigilanteService.save(vig));
+            try {
+                resposta.sucessos().add(vigilanteService.save(vig));
+            } catch (Exception e) {
+                resposta.erros().add(e.getMessage());
+            }
         });
         return resposta;
     }

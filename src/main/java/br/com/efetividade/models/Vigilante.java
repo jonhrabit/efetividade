@@ -19,5 +19,13 @@ public class Vigilante {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String nome, guerra,  matricula, escala, cpf, titularidade;
+    private String nome, guerra, matricula, escala, cpf, titularidade;
+
+    public boolean comparar(Vigilante vigilante) {
+        if ((this.matricula.equals(vigilante.getMatricula())) && (this.cpf.equals(vigilante.getCpf()))) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
