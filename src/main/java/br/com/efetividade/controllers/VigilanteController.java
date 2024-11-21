@@ -25,6 +25,10 @@ public class VigilanteController {
     VigilanteService vigilanteService;
 
     @GetMapping
+    public List<Vigilante> allAtivos() {
+        return vigilanteService.allAtivos();
+    }
+    @GetMapping("/todos")
     public List<Vigilante> all() {
         return vigilanteService.all();
     }

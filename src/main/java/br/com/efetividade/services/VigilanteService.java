@@ -23,6 +23,9 @@ public class VigilanteService {
     public List<Vigilante> all() {
         return vigilanteRepository.findAll();
     }
+    public List<Vigilante> allAtivos() {
+        return vigilanteRepository.findByAtivo(true);
+    }
 
     public Vigilante getByMatricula(String matricula) throws ItemNotFoundExcepion {
         try {

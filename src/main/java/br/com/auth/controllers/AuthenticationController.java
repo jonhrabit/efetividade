@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.auth.DTO.LoginDTO;
+import br.com.auth.DTO.TokenDTO;
 import br.com.auth.model.Permissao;
 import br.com.auth.model.Usuario;
 import br.com.auth.repositories.PermissaoRepository;
@@ -32,17 +33,18 @@ public class AuthenticationController {
     PermissaoRepository permissaoRepository;
 
     @PostMapping("login")
-    public ResponseEntity<Object> Login(@RequestBody LoginDTO login) {
+    public ResponseEntity<TokenDTO> Login(@RequestBody LoginDTO login) {
 
         var user = usuarioRepository.findByUsername(login.username());
         if (user.isEmpty()) {
-            return new ResponseEntity<Object>("Usuário não localizado.", HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<TokenDTO>(new TokenDTO(null, "Usuário não localizado."), HttpStatus.UNAUTHORIZED);
         }
         if (!user.get().matches(login.password())) {
-            return new ResponseEntity<Object>("Senha incorreta.", HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<TokenDTO>(new TokenDTO(null, "Senha incorreta."), HttpStatus.UNAUTHORIZED);
 
         }
-        return new ResponseEntity<Object>(authenticationService.authenticate(user.get()), HttpStatus.OK);
+        return new ResponseEntity<TokenDTO>(new TokenDTO(authenticationService.authenticate(user.get()), null),
+                HttpStatus.OK);
     }
 
     @RequestMapping("/primeiroacesso")

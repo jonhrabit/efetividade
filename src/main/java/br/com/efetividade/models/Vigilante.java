@@ -21,6 +21,8 @@ public class Vigilante {
 
     private String nome, guerra, matricula, escala, cpf, titularidade;
 
+    private boolean ativo;
+
     public boolean comparar(Vigilante vigilante) {
         if ((this.matricula.equals(vigilante.getMatricula())) && (this.cpf.equals(vigilante.getCpf()))) {
             return true;
